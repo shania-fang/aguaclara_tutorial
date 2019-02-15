@@ -4,11 +4,11 @@
 # Comments beginning with "TODO" contain the tasks that you must
 # complete in this interactive tutorial. Write your answers under each
 # TODO. Use Find (Ctrl/Cmd + F) to keep track of them.
-# 
+#
 # This is a Python file, not the interactive interpreter, so code won't
 # run immediately when you write it. You also WON'T need the triple
 # greater-than symbols (>>>) at the beginning of each line.
-# 
+#
 # Just focus on writing Python to the best of your abilities! Once
 # you're done, you'll have the chance to check your work in the next
 # tutorial section, Running Python Code: https://bit.ly/2w3PbCX
@@ -68,7 +68,7 @@ print(analogy['knowledge'] + ' ' + analogy['France'])
 # set it to 'no'.
 
 # Don't try to figure these variables out! Just write a conditional
-# that determines if the above conditions are met. 
+# that determines if the above conditions are met.
 a = True and False or not False or False
 b = True and not False or True and False
 c = False or not False and True or True
@@ -84,7 +84,7 @@ print(does_it_work)
 
 # TODO 6: Write a for loop that multiplies x by each integer from 1 to
 # 30.
-# 
+#
 # Hint: what does += do? Check the for loops section in the Writing
 # Python Code tutorial if you're unsure. Try it with multiplication.
 

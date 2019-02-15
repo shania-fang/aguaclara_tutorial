@@ -8,9 +8,10 @@
 ```python
 from aguaclara.play import *
 
+
 xArray = u.Quantity(np.arange(0.1, 0.5, 0.01), u.m)
 
-@u.wraps(None, [u.m / u.s, u.m, u.m ** 2 / u.s], False)
+##@u.wraps(None, [u.m / u.s, u.m, u.m ** 2 / u.s], False)
 def re_flat_plate(velocity, dist, nu):
   """This function calculates the Reynolds Number for flow past a plate using fluid velocity, plate length, and kinematic viscosity."""
   return (velocity * dist / nu)
@@ -18,6 +19,7 @@ def re_flat_plate(velocity, dist, nu):
 plt.plot(xArray, 5 * xArray / np.sqrt(re_flat_plate(1, xArray, pc.viscosity_kinematic(293 * u.kelvin))), '-', label = 'Blasius Solution')
 plt.xlabel('Distance From Leading Edge (Meters)')
 plt.ylabel('Boundary Layer Thickness (Meters)')
+
 plt.title('Blasius Solution for Water at 293 K')
 plt.minorticks_on()
 plt.grid(which = 'major')
@@ -30,15 +32,28 @@ plt.show()
 These questions are meant to test what you've learned from the Python Basics tutorial. If you need help answering a question, refer there first and use other online resources before seeking a Subteam Lead or RA. Be sure to run all your code with Hydrogen. When you code, make sure your using proper [variable naming](https://github.com/AguaClara/aide_design/wiki/Variable-Naming) and [coding standards](https://github.com/AguaClara/aide_design/wiki/Standards)
 
 1. Write a conditional statement with 3 conditions: when x is 10, when x is 1, and when x is anything other than 1 or 10. For each condition, have your code print what the value is or isn't.
+```python
+x=10
+if(x == 10):
+    print("value is 10")
+elif (x == 1):
+    print("value is 1")
+else:
+    print("value is anything other than 1 or 10")
+```
 
-<!--- Fill you answer here. --->
 
 
 
 
 2. Write a `for` loop that takes a variable with an initial value of 0, and adds the current index to the previous value of that variable (i.e. you variable should grow in size every iteration). Perform the iteration 20 times, and have the final value be printed at the end.
+```python
+x=0
+for i in range(1,21):
+  x = x+i
 
-<!--- Fill you answer here. --->
+print (x)
+```
 
 
 
@@ -50,7 +65,12 @@ These questions are meant to test what you've learned from the Python Basics tut
 
 3. Using the NumPy package and `unit_registry`, calculate the value of sin(4) meters, and use the sigfig function from the unit unit_registry module in aide_design to get your answer to 2 sig-figs. *(Hint: You will need to import these packages. Remember how to do that?)*
 
-<!--- Fill you answer here. --->
+```python  
+u.default_format = '.2f'
+print(math.sin(4)*u.m)
+
+```
+
 
 
 
@@ -58,10 +78,17 @@ These questions are meant to test what you've learned from the Python Basics tut
 
 <!--- Fill you answer here. --->
 
-
-
-
-
+```python
+myList=[1,2,3,4,5]
+myArray = np.array(myList)
+myArrayUnits = myArray * u.m
+my2DArray = np.array([myList, myList, myList, myList, myList])
+my2DArray[:,2] # This will give me the middle column
+my2DArray[2,:] # This will give me the middle column
+np.size(my2DArray)
+myArrayUnits = myArray * u.l
+myArrayUnits
+```
 
 
 
@@ -78,15 +105,43 @@ $$ D = \frac{k_BT}{6\pi\eta r} $$
 from scipy.constants import Boltzmann as kB_sc # I've imported the unitless value for kB from SciPy
 
 kB = kB_sc * u.joule / u.kelvin # I've given kB units for you in J/K; you can use the kB variable to give you Boltzmann's constant with units
+def diffusion(T, vis, r):
+  kB.to_base_units()
+  T.to(u.kelvin)
+  vis.to(u.kg/(u.m*u.s))
+  r.to(u.m)
+  return ((kB*T)/(6*math.Pi*eta*r)).to_base_units()
 
-# Write your code here
+
+
 
 ```
 
 6. You have a pipe with a radius of 0.2 m with water flowing in it at 2 m<sup>3</sup>/s. You want to see how the Reynolds Number changes as viscosity changes due to a change in temperature from 0 to 200<sup>o</sup>C. Create a plot of Reynolds Number against Temperature in Kelvin to show a relationship. Make sure your plot has a title, labeled axes, and axes grid. You can use functions from `physchem` like `pc.re_pipe` and `pc.viscosity_kinematic`. *(Hint: Make an array of temperatures to input into the `pc.viscosity_kinematic` function)*. Make sure to save you plot to your images folder in your personal repository, and display it below using `plt.show()` and a relative file path to the image.
 
-<!--- Fill you answer here. --->
+```python
+from aguaclara.play import*
 
+xArray = u.Quantity(np.arange(273, 473,20), u.kelvin)
+y= pc.re_pipe(2**3, 0.4, pc.viscosity_kinematic(xArray))
+
+@u.wraps(None, [u.m / u.s, u.m, u.m ** 2 / u.s], False)
+def re_flat_plate(velocity, dist, nu):
+  """This function calculates the Reynolds Number for flow past a plate using fluid velocity, plate length, and kinematic viscosity."""
+  return (velocity * dist / nu)
+
+plt.plot(xArray, y, '-', label = 'Reynolds Number')
+plt.xlabel('Temperature(Kelvin)')
+plt.ylabel('Reynolds Number')
+plt.title('Reynolds Number vs Temperature in Kelvin(273K-473K)')
+plt.minorticks_on()
+plt.grid(which = 'major')
+plt.grid(which = 'minor')
+plt.legend(loc = 'lower right', ncol = 1)
+plt.tight_layout()
+plt.savefig('./Images/ReynoldsNumber_Plot.png')
+plt.show()
+```
 
 # GitHub Basics
 Congratulations! You've completed this interactive tutorial. Now all you need to do is save your work and put it on your personal repository. Toggle the Git Tab using `Cntrl + Shift + 9`.
